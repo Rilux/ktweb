@@ -9,6 +9,5 @@ fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
     configureSerialization()
-    configureDatabases()
     configureRouting()
 }
