@@ -52,10 +52,11 @@ class CatalogueRepositoryCachedImpl(
                 }
             }
         }
+
         result = try {
             result.subList(skip ?: 0, (skip ?: 0) + (limit ?: 50))
         } catch (e: Exception) {
-            result
+            result.subList(skip ?: 0, result.lastIndex)
         }
         return result
     }
