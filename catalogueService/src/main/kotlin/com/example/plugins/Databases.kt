@@ -19,7 +19,6 @@ fun Application.configureDatabases() {
         File(environment.config.property("storage.ehcacheFilePath").getString())
     )
 
-
     routing {
         //add catalogue item
         post("/catalogue") {
@@ -57,6 +56,7 @@ fun Application.configureDatabases() {
             }
 
             val catalogue = catalogueService.getAllItems(skip = skip, limit = limit, sort = sort)
+
             if (catalogue.isNotEmpty()) {
                 call.respond(HttpStatusCode.OK, catalogue)
             } else {

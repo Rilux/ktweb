@@ -1,7 +1,6 @@
 package com.example.data
 
 import com.example.domain.CatalogueRepository
-import com.example.domain.constraints.ServiceConstraints
 import com.example.domain.model.CatalogueItem
 import com.example.domain.model.CatalogueItemExposed
 import com.example.domain.model.SortStyle
@@ -26,7 +25,7 @@ class CatalogueRepositoryImpl : CatalogueRepository {
                         it[CatalogueDtoModel.id],
                         it[CatalogueDtoModel.title],
                         it[CatalogueDtoModel.description],
-                        ServiceConstraints.imageServiceUrl + "/" + it[CatalogueDtoModel.imagePath],
+                        "http://127.0.0.1:8070/images" + "/" + it[CatalogueDtoModel.imagePath],
                     )
                 }
         }

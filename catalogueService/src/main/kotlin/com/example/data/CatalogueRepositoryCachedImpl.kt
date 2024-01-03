@@ -37,8 +37,8 @@ class CatalogueRepositoryCachedImpl(
     override suspend fun addItemToCatalogue(item: CatalogueItemExposed): Int = delegate.addItemToCatalogue(item)
         .also { id -> catalogueCached.put(id, CatalogueItem(id, item.title, item.description, item.imageUrl)) }
 
-    override suspend fun getAllItems(skip: Int?, limit: Int?, sort: SortStyle?): List<CatalogueItem> =
-        delegate.getAllItems().also { list ->
+    override suspend fun getAllItems(skip: Int?, limit: Int?, sort: SortStyle?): List<CatalogueItem> {
+        var result = delegate.getAllItems().also { list ->
             when (sort) {
                 SortStyle.BY_NAME_ASC -> {
                     list.sortedBy { item ->
@@ -51,7 +51,15 @@ class CatalogueRepositoryCachedImpl(
                     }
                 }
             }
-        }.subList(skip ?: 0, (skip ?: 0) + (limit ?: 50))
+        }
+        result = try {
+            result.subList(skip ?: 0, (skip ?: 0) + (limit ?: 50))
+        } catch (e: Exception) {
+            result
+        }
+        return result
+    }
+
 
 
     override suspend fun deleteItem(id: Int) {
