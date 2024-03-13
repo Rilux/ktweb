@@ -13,35 +13,8 @@ import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.util.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 fun main(args: Array<String>) {
-/*    embeddedServer(Netty, port = 8081) {
-        routing {
-            get("/{...}") {
-                val client = HttpClient(CIO)
-                val path = call.request.path()
-                val response: HttpResponse = when {
-                    path.startsWith("/catalogue") -> client.get("http://localhost:8090${path.removePrefix("/service1")}")
-                    path.startsWith("/cart") -> client.get("http://localhost:8080${path.removePrefix("/service2")}")
-                    else -> client.get("http://localhost:8081/notfound")
-                }
-                call.respondText(response.bodyAsText(), contentType = response.contentType(), status = response.status)
-            }
-            post("/{...}") {
-                val client = HttpClient(CIO)
-                val path = call.request.path()
-                val response: HttpResponse = when {
-                    path.startsWith("/catalogue") -> client.get("http://localhost:8090${path.removePrefix("/service1")}")
-                    path.startsWith("/cart") -> client.get("http://localhost:8080${path.removePrefix("/service2")}")
-                    else -> client.get("http://localhost:8081/notfound")
-                }
-                call.respondText(response.bodyAsText(), contentType = response.contentType(), status = response.status)
-            }
-        }
-    }.start(wait = true)*/
 
     embeddedServer(Netty, port = 8081) {
         routing {
