@@ -9,7 +9,4 @@ fun Application.configureHTTP() {
     routing {
         swaggerUI(path = "swagger")
     }
-    routing {
-        openAPI(path = "openapi")
-    }
 }
