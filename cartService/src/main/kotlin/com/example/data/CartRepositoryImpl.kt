@@ -6,6 +6,7 @@ import com.example.domain.model.CartDtoModel
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 
 class CartRepositoryImpl : CartRepository {
@@ -18,8 +19,9 @@ class CartRepositoryImpl : CartRepository {
 
     override suspend fun getAllForUser(userId: Int): List<Int> {
         return dbQuery {
-            CartDtoModel.selectAll()
-                .map {
+            CartDtoModel.select {
+                CartDtoModel.userId eq userId
+            }                .map {
                     it[CartDtoModel.itemId]
                 }
         }

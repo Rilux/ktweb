@@ -8,13 +8,13 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface CatalogueService {
-    @GET("/catalogue/{id}")
+    @GET("catalogue/{id}")
     suspend fun getCatalogueItem(@Path("id") id: Int) : CatalogueModel?
 }
 
 object RetrofitHelper {
     private var retrofit = Retrofit.Builder()
-        .baseUrl("http://localhost:8080/")
+        .baseUrl("http://0.0.0.0:8090/")
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
         .build()
 

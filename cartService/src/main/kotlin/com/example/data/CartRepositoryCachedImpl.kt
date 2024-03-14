@@ -33,19 +33,31 @@ class CartRepositoryCachedImpl(
     override suspend fun addItemToCart(newUserId: Int, newItemId: Int) =
         delegate.addItemToCart(newUserId, newItemId)
             .also { id ->
-                val items = cartCached.get(newUserId).toMutableList()
-                items.add(newItemId)
-                cartCached.put(newUserId, items.toIntArray())
+                val item = cartCached.find { it.key == newUserId }
+                if (item == null) {
+                    val items = cartCached.put(newUserId, listOf(newItemId).toIntArray())
+                } else {
+                    val items = cartCached.get(newUserId).toMutableList()
+                    items.add(newItemId)
+                    cartCached.put(newUserId, items.toIntArray())
+                }
             }
 
-    override suspend fun getAllForUser(userId: Int): List<Int> =
-        cartCached[userId].asList().ifEmpty {
+    override suspend fun getAllForUser(userId: Int): List<Int> {
+        val item = cartCached.find { it.key == userId }
+        return if (item == null) {
             delegate.getAllForUser(userId)
                 .also { list -> cartCached.put(userId, list.toIntArray()) }
+        } else {
+            cartCached[userId].asList().ifEmpty {
+                delegate.getAllForUser(userId)
+                    .also { list -> cartCached.put(userId, list.toIntArray()) }
+            }
         }
+    }
 
 
-    override suspend fun clearCartForUser(userId: Int)  {
+    override suspend fun clearCartForUser(userId: Int) {
         cartCached.remove(userId)
         return delegate.clearCartForUser(userId)
     }

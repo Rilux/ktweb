@@ -45,6 +45,7 @@ class CatalogueRepositoryCachedImpl(
                         item.title
                     }
                 }
+
                 else -> {
                     list.sortedByDescending { item ->
                         item.title
@@ -61,6 +62,7 @@ class CatalogueRepositoryCachedImpl(
         return result
     }
 
+    override suspend fun getCatalogueItem(id: Int): CatalogueItem? = delegate.getCatalogueItem(id)
 
 
     override suspend fun deleteItem(id: Int) {

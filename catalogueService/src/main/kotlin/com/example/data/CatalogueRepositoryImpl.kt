@@ -31,6 +31,21 @@ class CatalogueRepositoryImpl : CatalogueRepository {
         }
     }
 
+    override suspend fun getCatalogueItem(id: Int): CatalogueItem? {
+        return DatabaseSingleton.dbQuery {
+            CatalogueDtoModel.select {
+                CatalogueDtoModel.id eq id
+            }.map {
+                    CatalogueItem(
+                        it[CatalogueDtoModel.id],
+                        it[CatalogueDtoModel.title],
+                        it[CatalogueDtoModel.description],
+                        "http://127.0.0.1:8070/images" + "/" + it[CatalogueDtoModel.imagePath],
+                    )
+                }.firstOrNull()
+        }
+    }
+
     override suspend fun deleteItem(id: Int) {
         DatabaseSingleton.dbQuery {
             CatalogueDtoModel.deleteWhere {

@@ -35,7 +35,11 @@ fun Application.configureRouting() {
             val items = cartDb.getAllForUser(userId)
             val resultList = mutableListOf<CartModelWithDetailsExposed>()
             items.forEach {
-                val catalogueItem = service.getCatalogueItem(it)
+                val catalogueItem = try {
+                    service.getCatalogueItem(it)
+                } catch (e: Exception) {
+                    null
+                }
                 if(catalogueItem != null) {
                     val item = CartModelWithDetailsExposed(
                         id = it,

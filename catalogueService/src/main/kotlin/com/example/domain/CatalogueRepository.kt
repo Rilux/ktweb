@@ -14,6 +14,8 @@ interface CatalogueRepository {
      * */
     suspend fun getAllItems(skip: Int? = null, limit: Int? = null, sort: SortStyle? = null): List<CatalogueItem>
 
+    suspend fun getCatalogueItem(id: Int): CatalogueItem?
+
     suspend fun deleteItem(id: Int)
 
 }

@@ -63,5 +63,17 @@ fun Application.configureDatabases() {
                 call.respond(HttpStatusCode.NotFound)
             }
         }
+
+        get("/catalogue/{id}") {
+            val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
+
+            val catalogue = catalogueService.getCatalogueItem(id)
+
+            if (catalogue != null) {
+                call.respond(HttpStatusCode.OK, catalogue)
+            } else {
+                call.respond(HttpStatusCode.NotFound)
+            }
+        }
     }
 }
